@@ -17,6 +17,12 @@ func subTwo(c, d int) int {
 	return c - d
 }
 
+// Multiple functions
+func Multiple_two(e, d int) int {
+	ans := e * d
+	return ans
+}
+
 func main() {
 	fmt.Println("We are learning functions in Go")
 
@@ -30,4 +36,5 @@ func main() {
 	// Print results
 	fmt.Println("Addition:", ans)
 	fmt.Println("Subtraction:", sub)
+	fmt.Println("Multiplication:", Multiple_two(10, 20))
 }
