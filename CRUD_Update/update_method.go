@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"strings"
 )
@@ -76,11 +77,56 @@ func performPostRequest() {
 
 	fmt.Println("Response  status : ", res.Status)
 }
+
+func performsUpdateRequest() {
+	todo := Todo{
+		UserID:    23,
+		Title:     "Prince Kumar",
+		Completed: true,
+	}
+
+	// Convert the Todo struct to JSON
+	jsonData, err := json.Marshal(todo)
+	if err != nil {
+		fmt.Println("Error marshalling : ", err)
+		return
+	}
+
+	// convert json data to string
+	jsonString := string(jsonData)
+
+	// convert string data to reader
+	jsonReader := strings.NewReader(jsonString)
+
+	myURL := "https://jsonplaceholder.typicode.com/todos/1"
+
+	//craeting a Put Request -
+	req, err := http.NewRequest(http.MethodPost, myURL, jsonReader)
+	if err != nil {
+		fmt.Println("Error sending request : ", err)
+		return
+	}
+	req.Header.Set("Content-Type", "application/json")
+
+	//sending the request
+	client := http.Client{}
+	res, err := client.Do(req)
+	if err != nil {
+		fmt.Println("Error sending request : ", err)
+		return
+	}
+	defer res.Body.Close()
+
+	data, _ := ioutil.ReadAll(res.Body)
+	fmt.Println("Response : ", string(data))
+	fmt.Println("Response  status : ", res.Status)
+}
 func main() {
 	// CRUD - create, read, update, delete
 	fmt.Println("Learning about CRUD in Golang")
 	getrequest()
 	performPostRequest()
+	performsUpdateRequest()
 }
 
 /*
